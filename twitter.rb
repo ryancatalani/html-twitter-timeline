@@ -58,7 +58,7 @@ private
 
 		tweets = []
 
-		client.search("from:#{username}", result_type: "recent", count: 5).each do |tweet|
+		client.search("from:#{username}", result_type: "recent", count: 10).take(10).collect do |tweet|
 
 			tweet_text = tweet.text.dup
 			entities = []
@@ -76,7 +76,7 @@ private
 				# p tweet.media
 				tweet.media.each do |entity|
 					indices = entity.indices
-					replace = "<a href='#{entity.expanded_url}' target='_blank'><img src='#{entity.media_url}' /></a>"
+					replace = "<a href='#{entity.expanded_url}' target='_blank' class='media'><img src='#{entity.media_url}' /></a>"
 					entities << [indices, replace].flatten
 				end
 			end

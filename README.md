@@ -2,6 +2,8 @@
 
 Generates a lightweight HTML page of a Twitter user's latest tweets, and uploads it to S3. Updating can be triggered via `ruby update.rb` or by visiting `/update`. Meant to be embedded in an `iframe` where normal [embedded Twitter timelines](https://support.twitter.com/articles/20170071) may not work. Set up to work with Heroku.
 
+![Preview](preview.jpg)
+
 Requires:
 
 - Choosing a Twitter user and setting `USERNAME` environment variable.
