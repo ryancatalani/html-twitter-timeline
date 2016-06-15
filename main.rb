@@ -5,7 +5,7 @@ get '/tweets' do
 	generate_tweets_web
 end
 
-get '/upload' do
+get '/update' do
 	upload_tweets(true)
 	"OK"
 end
