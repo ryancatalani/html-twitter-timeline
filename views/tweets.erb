@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tweets from <%= @user[:name] %></title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+	<style>
+		/* http://meyerweb.com/eric/tools/css/reset/ 
+		   v2.0 | 20110126
+		   License: none (public domain)
+		*/
+
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed, 
+		figure, figcaption, footer, header, hgroup, 
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+		}
+		/* HTML5 display-role reset for older browsers */
+		article, aside, details, figcaption, figure, 
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+		/* Tweets */
+
+		body {
+			font: 14px/1.3em 'Open Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+		}
+
+		a:link, a:visited {
+			color: #0B7482;
+			text-decoration: none;
+		}
+
+		a:hover, a:active {
+			color: #14A2D7;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+
+		#twem_box {
+			border: 1px solid #D7D7D7;
+			border-radius: 10px;
+			padding: 15px;
+		}
+
+		#twem_user {
+			padding-bottom: 15px;
+			border-bottom: 3px double #D7D7D7;
+			margin-bottom: 15px;
+		}
+
+		#twem_user:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
+		#twem_profile_pic {
+			height: 40px;
+			width: 40px;
+			border-radius: 5px;
+			background-position: center;
+			background-size: cover;
+			background-repeat: no-repeat;
+			float: left;
+			margin-right: 10px;
+		}
+
+		#twem_user h1 {
+			font-size: 1.2em;
+			line-height: 1.3em;
+		}
+
+		#twem_user h2 {
+			font-weight: bold;
+		}
+
+		.twem_tweet {
+			padding-bottom: 10px;
+			border-bottom: 1px solid #D7D7D7;
+			margin-bottom: 10px;
+		}
+
+		.twem_tweet:last-child {
+			padding: 0;
+			border-bottom: none;
+			margin: 0;
+		}
+
+		.twem_tweet_date {
+			font-size: 0.75em;
+			margin-bottom: 5px;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="twem_box">
+		<div id="twem_user">
+			<div id="twem_profile_pic" style="background-image:url(<%= @user[:image] %>)"></div>
+			<h1>
+				Tweets from <a href="https://twitter.com/<%= @user[:screen_name] %>"><%= @user[:name] %></a>
+			</h1>
+			<h2>
+				<a href="https://twitter.com/<%= @user[:screen_name] %>">@<%= @user[:screen_name] %></a>
+			</h2>
+		</div>
+
+		<ul id="twem_tweets">
+		<% @tweets.each do |tweet| %>
+			<li class="twem_tweet">
+				<a class="twem_tweet_date" href="<%= tweet[:uri] %>" target="_blank"><%= tweet[:date] %></a>
+				<div class="twem_tweet_html"><%= tweet[:html] %></div>
+			</li>
+		<% end %>
+		</ul>
+	</div>
+	
+</body>
+</html>
