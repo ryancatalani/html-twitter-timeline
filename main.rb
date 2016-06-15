@@ -1,6 +1,4 @@
-require 'json'
 require 'sinatra'
-require 'sinatra/json'
 require_relative 'twitter'
 
 # set :json_encoder, :to_json
