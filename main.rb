@@ -1,13 +1,11 @@
 require 'sinatra'
 require_relative 'twitter'
 
-# set :json_encoder, :to_json
-
 get '/tweets' do
-	generate_tweets()
+	generate_tweets_web
 end
 
 get '/upload' do
-	upload_tweets()
+	upload_tweets(true)
 	"OK"
 end

@@ -3,14 +3,23 @@ require 'date'
 require 'erb'
 require 'fog'
 
-def generate_tweets
+def generate_tweets_web
 	user = ENV['USERNAME']
 	@tweets = get_tweets(user)
 	@user = get_user_info(user)
 	erb :tweets
 end
 
-def upload_tweets
+def generate_tweets_rb
+	user = ENV['USERNAME']
+	@tweets = get_tweets(user)
+	@user = get_user_info(user)
+
+	erb = ERB.new(File.new('views/tweets.erb').read)
+	return erb.result
+end
+
+def upload_tweets(web=false)
 	connection = Fog::Storage.new({
 	  provider: 'AWS',
 	  aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
@@ -18,9 +27,16 @@ def upload_tweets
 	})
 
 	directory = connection.directories.get("twitterembed")
+
+	if web
+		body = generate_tweets_web
+	else
+		body = generate_tweets_rb
+	end
+
 	file = directory.files.create({
 		key: "#{ENV['USERNAME']}/tweets.html",
-		body: generate_tweets(),
+		body: body,
 		public: true
 	})
 end
