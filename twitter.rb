@@ -2,6 +2,7 @@ require 'twitter'
 require 'date'
 require 'erb'
 require 'fog'
+require 'json'
 
 def generate_tweets_web
 	user = ENV['USERNAME']
@@ -17,6 +18,13 @@ def generate_tweets_rb
 
 	erb = ERB.new(File.new('views/tweets.erb').read)
 	return erb.result
+end
+
+def generate_latest_tweet_rb
+	user = ENV['USERNAME']
+	tweet = get_tweets(user, 1)
+
+	return tweet.to_json
 end
 
 def upload_tweets(web=false)
@@ -41,6 +49,23 @@ def upload_tweets(web=false)
 	})
 end
 
+def upload_latest_tweet
+	connection = Fog::Storage.new({
+	  provider: 'AWS',
+	  aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+	  aws_secret_access_key: ENV['AWS_SECRET_ACCESS']
+	})
+
+	directory = connection.directories.get("twitterembed")
+	body = generate_latest_tweet_rb
+
+	file = directory.files.create({
+		key: "#{ENV['USERNAME']}/latest_tweet.json",
+		body: body.force_encoding('utf-8'),
+		public: true
+	})
+end
+
 private
 
 	def get_user_info(username)
@@ -54,11 +79,11 @@ private
 		return ret
 	end
 
-	def get_tweets(username)
+	def get_tweets(username, count=10)
 
 		tweets = []
 
-		client.search("from:#{username}", result_type: "recent", count: 10).take(10).collect do |tweet|
+		client.search("from:#{username}", result_type: "recent", count: count).take(count).collect do |tweet|
 
 			tweet_text = tweet.text.dup
 			entities = []
